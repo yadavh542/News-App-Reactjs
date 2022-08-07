@@ -4,6 +4,8 @@ import NavBar from './components/NavBar';
 import News from './components/News';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import LoadingBar from 'react-top-loading-bar';
+import { useGlobalContext } from './context';
+import PropTypes from "prop-types";
 
 const App = () => {
   const pageSize=15;
@@ -11,20 +13,21 @@ const App = () => {
 
   const [progress, setProgress] = useState(0)
  
-
+  const {dark,toggleDark} = useGlobalContext();
   
     return (
-      <div>
+      <div className="">
         <Router> 
-        <NavBar/>
-        <LoadingBar
-        height={3}
-        color='#f11946'
-        progress={progress}
-        //onLoaderFinished={() => setProgress(0)}
-      />
+          <NavBar/>
+          <LoadingBar
+          height={5}
+          color='#f11946'
+          progress={progress}
+          //onLoaderFinished={() => setProgress(0)}
+        />
+        
         <Switch> 
-          <Route exact path="/home"><News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="in" category="general"/></Route>
+          <Route exact path="/"><News setProgress={setProgress} apiKey={apiKey} key="general" pageSize={pageSize} country="in" category="general"/></Route>
           <Route exact path="/business"><News setProgress={setProgress} apiKey={apiKey} key="business" pageSize={pageSize} country="in" category="business"/></Route>
           <Route exact path="/entertainment"><News setProgress={setProgress} apiKey={apiKey} key="entertainment" pageSize={pageSize} country="in" category="entertainment"/></Route>
           <Route exact path="/health"><News setProgress={setProgress} apiKey={apiKey} key="health" pageSize={pageSize} country="in" category="health"/></Route>

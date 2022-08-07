@@ -1,11 +1,14 @@
 import React from "react";
+import { useGlobalContext } from "../context";
 
 const NewsItem = (props)  => {
-  
+    const {dark} = useGlobalContext();
     let { title, description, imageUrl, newsUrl, author, date, source } = props;
+    
     return (
       <div className="my-3">
-        <div className="card">
+        
+        <div className={dark?"bg-dark card":"card"}>
           <div
             style={{
               display: "flex",
@@ -24,13 +27,13 @@ const NewsItem = (props)  => {
           <img
             src={
               !imageUrl
-                ? "https://a4.espncdn.com/combiner/i?img=%2Fi%2Fcricket%2Fcricinfo%2F1099495_800x450.jpg"
+                ? "https://cdn.sanity.io/images/0vv8moc6/ophtalmology/d198c3b708a35d9adcfa0435ee12fe454db49662-640x400.png"
                 : imageUrl
             }
             className="card-img-top"
             alt="..."
           />
-          <div className="card-body">
+          <div className={dark?"card-body text-white": "card-body"}>
             <h5 className="card-title">{title}...</h5>
             <p className="card-text"> {description}...</p>
             <p className="card-text">
@@ -49,6 +52,7 @@ const NewsItem = (props)  => {
             </a>
           </div>
         </div>
+        
       </div>
     );
  

@@ -3,12 +3,14 @@ import NewsItem from "./NewsItem";
 import Spinner from "./Spinner";
 import PropTypes from "prop-types";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { useGlobalContext } from "../context";
 
 const News = (props) => {
   const [articles, setArticles] = useState([])
   const [loading, setLoading] = useState(true)
   const [page, setPage] = useState(1)
   const [totalResults, setTotalResults] = useState(0)
+  const {dark} = useGlobalContext();
   
 
  const capitalizeFirstLetter = (string) => {
@@ -49,7 +51,8 @@ const News = (props) => {
     //this.updateNews();
     //  }
 
-  const handlePrevClick = async () => {
+
+  // const handlePrevClick = async () => {
     //let url = `https://newsapi.org/v2/top-headlines?country=${props.country}&category=${props.category}&apiKey=799a0762172042e8bc0ef381c787b1b7&page=${this.state.page - 1}&pageSize=${props.pageSize}`;
     //this.setState({loading:true});
     //let data = await fetch(url);
@@ -61,10 +64,12 @@ const News = (props) => {
     //      loading: false
     //
     //  })
-    setPage(page-1)
-    updateNews();
-  };
-  const handleNextClick = async () => {
+  //   setPage(page-1)
+  //   updateNews();
+  // };
+
+
+  // const handleNextClick = async () => {
     //if (!(this.state.page + 1 > Math.ceil(this.state.totalResults/props.pageSize))){
     //
     //
@@ -83,9 +88,9 @@ const News = (props) => {
     //  })
     //}
     
-    setPage(page+1)
-    updateNews();
-  };
+  //   setPage(page+1)
+  //   updateNews();
+  // };
 
   const fetchMoreData = async () => {
     
@@ -98,29 +103,32 @@ const News = (props) => {
     setArticles(articles.concat(parsedData.articles))
     setTotalResults(parsedData.totalResults)
     
-    
+    console.log(url);
   };
 
   
+  
     return (
-      <>
-        <h1 className="text-center" style={{ margin: "35px 0px", marginTop: '85px' }}>
-          NewsToday - Top Headlines from{" "}
-          <strong>{capitalizeFirstLetter(props.category)}</strong>{" "}
-          category
-        </h1>
-        {loading && <Spinner/>}
+      <div 
+      className={dark?"bg-secondary mt-200":"bg-light mt-200"} 
+      style={{marginTop:"56px"}}>
+        
+        <h2 className={dark?"text-white text-center":"text-black text-center"}><strong>{capitalizeFirstLetter(props.category)}</strong> News</h2>
+        
+        
 
         <InfiniteScroll
-          dataLength={articles.length}
+          dataLength={articles?.length}
           next={fetchMoreData}
-          hasMore={articles.length !== totalResults}
+          hasMore={articles?.length !== totalResults}
           loader={<Spinner/>}
         >
 
+        { loading? <Spinner/> :
         <div className="container"> 
+
           <div className="row">
-            {articles.map((element) => {
+            {articles?.map((element) => {
               return (
                 <div className="col-md-4" key={element.url}>
                   <NewsItem
@@ -141,8 +149,9 @@ const News = (props) => {
             })}
           </div>
           </div>
+          }
         </InfiniteScroll>
-
+        
         {/*<div className="container d-flex justify-content-between">
           <button
             disabled={this.state.page <= 1}
@@ -165,13 +174,13 @@ const News = (props) => {
             Next &rarr;
           </button>
         </div>*/}
-      </>
+      </div>
     );
   
 }
 
   News.defaultProps = {
-    country: "in",
+    country: "us",
     pageSize: 8,
     category: "general",
   };
